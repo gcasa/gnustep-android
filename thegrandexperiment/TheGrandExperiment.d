@@ -1,4 +1,4 @@
-TheGrandExperiment.o: TheGrandExperiment.c android_native_app_glue.h \
+TheGrandExperiment.o: TheGrandExperiment.m android_native_app_glue.h \
   /Users/heron/Development/Algoriddim/gnustep-toolchain/gnustep-android/GNUstep/System/Library/Headers/Foundation/NSString.h \
   /Users/heron/Development/Algoriddim/gnustep-toolchain/gnustep-android/GNUstep/System/Library/Headers/GNUstepBase/GSVersionMacros.h \
   /Users/heron/Development/Algoriddim/gnustep-toolchain/gnustep-android/GNUstep/System/Library/Headers/GNUstepBase/GSConfig.h \
