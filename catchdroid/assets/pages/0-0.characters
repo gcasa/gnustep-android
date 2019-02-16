@@ -1,0 +1,12 @@
+(
+  {
+    class = "NPC";
+    texturePath = "player.png";
+    mapX = 5;
+    mapY = 5;
+    direction = 2;
+    lines = ("What a long week.\nI want to go rest.",
+             "I'm tired of\nstanding.\nHave a chair?",
+             "...\n\nWhy are you so\nsilent?");
+  },
+)
