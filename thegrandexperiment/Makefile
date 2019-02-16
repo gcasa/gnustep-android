@@ -11,7 +11,7 @@ IDENTIFIER=net.vucica.tv.ouya.sample.game
 #WITH_OUYA=apk/raw/key.der
 WITH_OUYA=
 
-ANDROID_REV=android-23
+ANDROID_REV=android-28
 TEST_OBJC=true
 PLATFORM=linux
 BUILD_TOOLS_REV=28.0.3
