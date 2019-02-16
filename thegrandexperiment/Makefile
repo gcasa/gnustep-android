@@ -71,12 +71,12 @@ endif
 
 CFLAGS += -x objective-c $(shell $(GSCONFIG) --objc-flags) # testing objc
 LDFLAGS += $(shell $(GSCONFIG) --base-libs)
-FOUNDATION_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_LOCAL_LIBRARIES)/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
-OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_LOCAL_LIBRARIES)/libobjc.so.*.* apk/lib/armeabi/libobjc.so
+FOUNDATION_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
+OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libobjc.so* apk/lib/armeabi/libobjc.so
 
 # instead of rpl to replace .4.6 with null, we should do this: 
 # http://www.opengis.ch/2011/11/23/creating-non-versioned-shared-libraries-for-android/
-RPL = rpl -R -e libobjc.so.4.6 "libobjc.so\x00\x00\x00\x00" apk/lib/armeabi/
+# RPL = rpl -R -e libobjc.so.4.6 "libobjc.so\x00\x00\x00\x00" apk/lib/armeabi/
 
 JAVA_CLASS = TGENativeActivity
 
