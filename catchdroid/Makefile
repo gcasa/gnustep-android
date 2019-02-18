@@ -120,7 +120,7 @@ OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_LOCAL_LIBRARIES)/lib
 
 # instead of rpl to replace .4.6 with null, we should do this: 
 # http://www.opengis.ch/2011/11/23/creating-non-versioned-shared-libraries-for-android/
-RPL = rpl -R -e libobjc.so.4.6 "libobjc.so\x00\x00\x00\x00" apk/lib/armeabi/
+# RPL = rpl -R -e libobjc.so.4.6 "libobjc.so\x00\x00\x00\x00" apk/lib/armeabi/
 
 JAVA_CLASS = IVNativeActivity
 
@@ -136,7 +136,7 @@ RPL =
 JAVA_CLASS = DummyClass
 endif
 
-CFLAGS += -Ilibpng-android/jni
+# CFLAGS += -I../src/libpng-android/jni
 
 OBJS=src/catchdroid.o src/Texture.o src/Asset.o src/Page.o src/Character.o src/Scene.o src/Font.o src/TextContainer.o src/NPC.o
 
@@ -188,7 +188,8 @@ classes/net/vucica/catchdroid/$(JAVA_CLASS).class: $(JAVA_CLASS).java
 	$(JAVAC) -bootclasspath $(ANDROID_JAR) -d classes/ $(JAVA_CLASS).java -source 1.6 -target 1.6
 
 libpng-android/obj/local/armeabi/libpng.a:
-	sh -c "export PATH=$(PATH):$(ANDROID_NDK) && cd libpng-android && ./build.sh"
+	sh -c "export PATH=$(PATH):$(ANDROID_NDK) && cd ${PNG_DIR} && ./build.sh"
+	echo ${PNG_DIR}
 
 clean:
 	-rm *.o
@@ -208,4 +209,4 @@ run:
 nginx: /usr/share/nginx/www/$(APKNAME).apk
 /usr/share/nginx/www/$(APKNAME).apk: $(APKNAME).apk
 	cp $(APKNAME).apk /usr/share/nginx/www/
-	
+
