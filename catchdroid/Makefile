@@ -14,7 +14,7 @@ WITH_OUYA=
 ANDROID_REV=android-19
 TEST_OBJC=true
 PLATFORM=linux
-BUILD_TOOLS_REV=19.0.3
+BUILD_TOOLS_REV=28.0.3
 
 # Pick one:
 # regular install
@@ -115,8 +115,8 @@ endif
 
 CFLAGS += -x objective-c $(shell $(GSCONFIG) --objc-flags) # testing objc
 LDFLAGS += $(shell $(GSCONFIG) --base-libs)
-FOUNDATION_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_LOCAL_LIBRARIES)/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
-OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_LOCAL_LIBRARIES)/libobjc.so.*.* apk/lib/armeabi/libobjc.so
+FOUNDATION_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
+OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libobjc.so apk/lib/armeabi/libobjc.so
 
 # instead of rpl to replace .4.6 with null, we should do this: 
 # http://www.opengis.ch/2011/11/23/creating-non-versioned-shared-libraries-for-android/
@@ -150,8 +150,8 @@ install: $(APKNAME).apk
 uninstall:
 	$(ADB) uninstall $(IDENTIFIER)
 
-lib$(APKNAME).so: $(OBJS) android_native_app_glue.o libpng-android/obj/local/armeabi/libpng.a
-	$(CC) $(LDFLAGS) $(OBJS) android_native_app_glue.o libpng-android/obj/local/armeabi/libpng.a -o lib$(APKNAME).so
+lib$(APKNAME).so: $(OBJS) android_native_app_glue.o
+	$(CC) $(LDFLAGS) $(OBJS) android_native_app_glue.o $(PNG_DIR)/obj/local/armeabi-v7a/libpng.a -o lib$(APKNAME).so
 
 $(APKNAME).unsigned.apk: lib$(APKNAME).so classes.dex AndroidManifest.xml
 	rm -rf apk/
@@ -186,10 +186,6 @@ classes.dex: classes/net/vucica/catchdroid/$(JAVA_CLASS).class
 classes/net/vucica/catchdroid/$(JAVA_CLASS).class: $(JAVA_CLASS).java
 	mkdir -p classes/net/vucica/catchdroid/
 	$(JAVAC) -bootclasspath $(ANDROID_JAR) -d classes/ $(JAVA_CLASS).java -source 1.6 -target 1.6
-
-libpng-android/obj/local/armeabi/libpng.a:
-	sh -c "export PATH=$(PATH):$(ANDROID_NDK) && cd ${PNG_DIR} && ./build.sh"
-	echo ${PNG_DIR}
 
 clean:
 	-rm *.o
