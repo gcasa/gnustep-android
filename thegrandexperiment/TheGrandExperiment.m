@@ -12,6 +12,7 @@
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "native-activity", __VA_ARGS__))
 
 #include <Foundation/NSString.h>
+#include <dispatch/dispatch.h>
 
 /**
  * Our saved state data.
@@ -240,6 +241,18 @@ void android_main(struct android_app* state) {
 
     NSString * aString = @"Hello NSString!";
     LOGI([aString UTF8String]);
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        LOGI([@"DISPATCH ASYNC SUCCESS" UTF8String]);
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        LOGI([@"DISPATCH AFTER SUCCESS" UTF8String]);
+    });
+    
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        LOGI([@"DISPATCH SYNC SUCCESS" UTF8String]);
+    });
 
     while (1) {
         // Read all pending events.

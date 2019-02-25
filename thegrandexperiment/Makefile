@@ -69,10 +69,14 @@ ifeq ($(GSCONFIG),)
 GSCONFIG = gnustep-config
 endif
 
+GNUSTEP_SYSTEM_LIBRARIES=`$(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES`
+
 CFLAGS += -x objective-c $(shell $(GSCONFIG) --objc-flags) # testing objc
 LDFLAGS += $(shell $(GSCONFIG) --base-libs)
-FOUNDATION_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
-OBJC_COPY = $(CP_SO) $(shell $(GSCONFIG) --variable=GNUSTEP_SYSTEM_LIBRARIES)/libobjc.so* apk/lib/armeabi/libobjc.so
+FOUNDATION_COPY = $(CP_SO) "$(GNUSTEP_SYSTEM_LIBRARIES)"/libgnustep-base.so.1.*.* apk/lib/armeabi/libgnustep-base.so
+OBJC_COPY = $(CP_SO) "$(GNUSTEP_SYSTEM_LIBRARIES)"/libobjc.so apk/lib/armeabi/libobjc.so
+DISPATCH_COPY = $(CP_SO) "$(GNUSTEP_SYSTEM_LIBRARIES)"/libdispatch.so apk/lib/armeabi/libdispatch.so
+BLOCKSRUNTIME_COPY = $(CP_SO) "$(GNUSTEP_SYSTEM_LIBRARIES)"/libBlocksRuntime.so apk/lib/armeabi/libBlocksRuntime.so
 
 # instead of rpl to replace .4.6 with null, we should do this: 
 # http://www.opengis.ch/2011/11/23/creating-non-versioned-shared-libraries-for-android/
@@ -83,6 +87,8 @@ JAVA_CLASS = TGENativeActivity
 else
 FOUNDATION_COPY = 
 OBJC_COPY =
+DISPATCH_COPY =
+BLOCKSRUNTIME_COPY =
 RPL =
 
 JAVA_CLASS = DummyClass
@@ -108,6 +114,8 @@ $(APKNAME).unsigned.apk: lib$(APKNAME).so classes.dex AndroidManifest.xml
 	$(CP_SO) lib$(APKNAME).so apk/lib/armeabi/lib$(APKNAME).so
 	$(FOUNDATION_COPY)
 	$(OBJC_COPY)
+	$(DISPATCH_COPY)
+	$(BLOCKSRUNTIME_COPY)
 
 	$(RPL)
 
